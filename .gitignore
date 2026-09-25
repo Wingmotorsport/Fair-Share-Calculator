@@ -1,0 +1,4 @@
+connector/.venv/
+connector/fair_share.db
+__pycache__/
+*.py[cod]
