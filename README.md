@@ -1,6 +1,6 @@
 # iRacing Fair Share
 
-Website frontend for the Wing Motorsport-style endurance fair-share calculator.
+Website frontend for theendurance fair-share calculator.
 
 ## Features
 - Laps / Time / Hybrid fair-share modes
