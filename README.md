@@ -34,6 +34,15 @@ at `http://127.0.0.1:8080`; enter a race code and click **Join shared race**.
 The website and WebSocket both use port 8080, which also allows one secure
 tunnel to carry the complete app later.
 
+When Cloudflare Tunnel is installed, the launcher also opens a **Fair Share
+Public Tunnel** window. Copy its `https://...trycloudflare.com` address. On the
+GitHub Pages calculator, change **Server WebSocket** to the same address with
+`https://` replaced by `wss://` and `/ws` added, then join the same race code.
+For example: `wss://example.trycloudflare.com/ws`.
+
+Quick Tunnel addresses are temporary and change whenever the tunnel restarts.
+Keep both connector windows open for the whole race.
+
 The GitHub Pages copy remains useful for timer/manual mode. For live telemetry,
 use the local page opened by the connector.
 
@@ -49,3 +58,4 @@ Example message:
 
 The connector only works on the iRacing PC because the iRacing SDK exposes
 telemetry through local Windows shared memory.
+
