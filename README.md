@@ -59,3 +59,17 @@ Example message:
 The connector only works on the iRacing PC because the iRacing SDK exposes
 telemetry through local Windows shared memory.
 
+
+## Driver limit alerts
+
+The race control panel and driver dashboard show a green **Minimum met**
+confirmation once a driver's minimum laps are complete. Separate maximum-total
+and maximum-stint counters turn amber with **5 laps remaining**, count down
+through 4, 3, 2 and 1, and turn red at **LIMIT REACHED — 0 laps remaining**.
+Exceeding a limit shows a red **LIMIT EXCEEDED** warning while preserving the
+minimum achievement. A zero percentage keeps that maximum unlimited.
+
+Alerts use the existing completed-lap source: telemetry, timer estimates or
+manual lap entry. They are visual warnings; they do not control the car.
+
+Run the limit boundary checks with `node tests/limit-alerts.cjs`.
