@@ -15,9 +15,12 @@ a minute. Keep both terminal windows open during the race.
 ## Local dashboard
 
 The connector opens `http://127.0.0.1:8080`. Enter a race code and click
-**Join shared race**. Press **Start** when the race begins.
+**Join shared race**. Team telemetry starts automatically when the connector
+can identify your car and driver. Start and manual swap controls are then disabled.
 
-Driver names in Fair Share should exactly match their iRacing names.
+Drivers are detected by iRacing ID as they appear in the car. Set each driver’s
+minimum, maximum total and maximum stint percentages. Keep the connector running
+throughout the race; laps missed before connection or during gaps remain unallocated.
 
 ## Teammates and GitHub Pages
 
@@ -46,3 +49,10 @@ Quick Tunnel is public. The tunnel address changes whenever it restarts.
 The SQLite race database is created automatically at
 `connector/fair_share.db`. It is intentionally not included in the ZIP.
 
+
+## Updating an existing installation
+
+Close the connector first. Extract the new ZIP into your existing app folder,
+replacing the application files. Keep `connector/fair_share.db` to preserve
+settings and previously captured telemetry. Restart `start-connector.bat` and
+refresh each browser. The new tables are created automatically.

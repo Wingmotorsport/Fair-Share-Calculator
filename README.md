@@ -48,8 +48,8 @@ use the local page opened by the connector.
 
 The server stores race-room state in `connector/fair_share.db` using SQLite.
 Browsers using the same race code receive synchronized setup, laps, timer,
-drivers, and stint logs. The connector also supplies completed laps, session
-time, and the active driver name; website names should match iRacing names.
+drivers, and stint logs. The connector owns the team lap ledger and detects
+the current driver by iRacing customer ID; typing matching names is no longer required.
 
 Example message:
 ```json
@@ -73,3 +73,42 @@ Alerts use the existing completed-lap source: telemetry, timer estimates or
 manual lap entry. They are visual warnings; they do not control the car.
 
 Run the limit boundary checks with `node tests/limit-alerts.cjs`.
+
+## Automatic team tracking
+
+Run the updated Windows connector on one PC connected to the team's iRacing
+session. Click **Join shared race**; no timer start or manual driver swap is
+needed. Other browsers use that connector and the same race code.
+
+- The team's own car is selected from PlayerCarIdx, not the spectator camera.
+- Drivers are added as their iRacing UserID is observed in the car. This is an
+  observed roster, not an import of every registered teammate before they drive.
+- **In car** follows the detected driver. Completed lap deltas go to that driver.
+- Driver swaps close the observed stint and start a new one automatically.
+- Confirmed totals, observed drivers and stint logs are persisted in SQLite.
+  Browser refreshes and multiple viewers cannot double-count laps.
+- Minimum and maximum percentages remain editable per driver. New drivers
+  default to zero (no configured minimum/maximum); set your event's limits.
+- Practice, qualifying and race session identities have separate ledgers.
+- A race code binds to its first detected team car. Use a different code for
+  another car. Each team uses its own connector; this is not a multi-car server.
+- Before-connection laps, reconnect gaps and laps first seen at an ambiguous
+  driver-swap boundary are **unallocated**. They are not guessed or backfilled.
+  Partial stints are labelled; their displayed laps can understate the full stint.
+- When telemetry stops, totals freeze and **In car** clears. Estimated/manual
+  counting stays disabled for that telemetry view. Refresh for manual mode.
+- Total race laps and average lap time remain manual setup inputs.
+
+Keep iRacing and the connector running continuously, including driver swaps.
+Use the connector PC as a connected team participant. Actual SDK behaviour
+during team swaps still needs verification in a live iRacing team session.
+
+Tests (after installing connector requirements):
+
+```
+python -m unittest discover -s tests -p "test_*.py"
+node tests/limit-alerts.cjs
+```
+
+The Python tests simulate SDK snapshots and exercise the real HTTP/WebSocket
+server. They do not require iRacing to be installed or running.
